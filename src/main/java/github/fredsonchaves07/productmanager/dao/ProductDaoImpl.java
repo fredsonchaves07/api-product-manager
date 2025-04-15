@@ -2,6 +2,7 @@ package github.fredsonchaves07.productmanager.dao;
 
 import github.fredsonchaves07.productmanager.entity.Product;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -17,7 +18,12 @@ public class ProductDaoImpl implements ProductDao {
     public ProductDaoImpl() {
     }
 
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
     @Override
+    @Transactional
     public Product save(Product product) {
         if (product.id() == null) return persist(product);
         return merge(product);
@@ -46,12 +52,14 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
         if (id == null) return;
         findById(id).ifPresent(entityManager::remove);
     }
 
     @Override
+    @Transactional
     public void deleteAll() {
         entityManager
                 .createQuery("DELETE FROM Product")
