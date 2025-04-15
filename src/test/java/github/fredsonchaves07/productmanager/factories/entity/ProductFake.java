@@ -2,6 +2,7 @@ package github.fredsonchaves07.productmanager.factories.entity;
 
 import com.github.javafaker.Faker;
 import github.fredsonchaves07.productmanager.entity.Product;
+import github.fredsonchaves07.productmanager.service.ProductDto;
 
 import java.math.BigDecimal;
 import java.util.Locale;
@@ -17,5 +18,9 @@ public final class ProductFake {
                 .price(BigDecimal.valueOf(Double.parseDouble(faker.commerce().price().replace(",", "."))))
                 .stockQuantity(faker.number().numberBetween(1, 100))
                 .build();
+    }
+
+    public static ProductDto createProductDtoFromProduct(Product product) {
+        return ProductDto.fromEntity(product);
     }
 }
