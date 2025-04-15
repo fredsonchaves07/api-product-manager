@@ -20,6 +20,17 @@ public final class ProductDaoTest {
     @Autowired
     private ProductDao productDao;
 
+    @TestConfiguration
+    static class ProductDaoTestConfig {
+
+        @Bean
+        public ProductDao productDao(EntityManager entityManager) {
+            ProductDaoImpl dao = new ProductDaoImpl();
+            dao.setEntityManager(entityManager);
+            return dao;
+        }
+    }
+
     @Test
     void shouldCreateAProduct() {
         Product newProduct = createProductFake();
@@ -116,16 +127,5 @@ public final class ProductDaoTest {
     @Test
     void shouldNotDeleteProductWithNullId() {
         assertDoesNotThrow(() -> productDao.deleteById(null));
-    }
-
-    @TestConfiguration
-    static class ProductDaoTestConfig {
-
-        @Bean
-        public ProductDao productDao(EntityManager entityManager) {
-            ProductDaoImpl dao = new ProductDaoImpl();
-            dao.setEntityManager(entityManager);
-            return dao;
-        }
     }
 }
