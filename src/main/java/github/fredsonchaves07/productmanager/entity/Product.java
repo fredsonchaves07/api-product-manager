@@ -4,6 +4,8 @@ import github.fredsonchaves07.productmanager.builder.CreateProductBuilder;
 import github.fredsonchaves07.productmanager.builder.CreateProductBuilderImpl;
 import github.fredsonchaves07.productmanager.builder.UpdateProductBuilder;
 import github.fredsonchaves07.productmanager.builder.UpdateProductBuilderImpl;
+import github.fredsonchaves07.productmanager.error.ProductError;
+import github.fredsonchaves07.productmanager.error.TypeProductError;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -35,6 +37,7 @@ public final class Product {
         this.description = builder.description();
         this.price = builder.price();
         this.stockQuantity = builder.stockQuantity();
+        this.validate();
     }
 
     public Product(UpdateProductBuilderImpl builder) {
@@ -43,6 +46,7 @@ public final class Product {
         this.description = builder.description();
         this.price = builder.price();
         this.stockQuantity = builder.stockQuantity();
+        this.validate();
     }
 
     public static CreateProductBuilder create() {
@@ -71,6 +75,24 @@ public final class Product {
 
     public UpdateProductBuilder toBuilder() {
         return new UpdateProductBuilderImpl(this);
+    }
+
+    private void validate() {
+        if (nameIsNull()) throw ProductError.throwsError(TypeProductError.NAME_REQUIRED);
+        if (priceIsNegative()) throw ProductError.throwsError(TypeProductError.INVALID_PRICE);
+        if (stockQuantityIsNegative()) throw ProductError.throwsError(TypeProductError.INVALID_STOCK);
+    }
+
+    private boolean nameIsNull() {
+        return this.name == null || this.name.isEmpty();
+    }
+
+    private boolean priceIsNegative() {
+        return price == null || price.compareTo(BigDecimal.ZERO) < 0;
+    }
+
+    private boolean stockQuantityIsNegative() {
+        return stockQuantity < 0;
     }
 
     @Override
