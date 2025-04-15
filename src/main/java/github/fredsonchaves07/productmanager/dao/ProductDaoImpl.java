@@ -52,10 +52,9 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    @Transactional
-    public void deleteById(Long id) {
-        if (id == null) return;
-        findById(id).ifPresent(entityManager::remove);
+    public void delete(Product product) {
+        if (product == null) return;
+        entityManager.remove(product);
     }
 
     @Override

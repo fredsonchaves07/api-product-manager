@@ -100,7 +100,7 @@ public final class ProductDaoTest {
     @Test
     void shouldDeleteAProduct() {
         Product newProduct = productDao.save(createProductFake());
-        productDao.deleteById(newProduct.id());
+        productDao.delete(newProduct);
         assertTrue(productDao.findAll().isEmpty());
         assertEquals(Long.valueOf(0), productDao.count());
     }
@@ -117,15 +117,7 @@ public final class ProductDaoTest {
     }
 
     @Test
-    void notShouldDeleteAProductWithIdInexistent() {
-        productDao.save(createProductFake());
-        productDao.deleteById(999L);
-        assertFalse(productDao.findAll().isEmpty());
-        assertEquals(Long.valueOf(1), productDao.count());
-    }
-
-    @Test
     void shouldNotDeleteProductWithNullId() {
-        assertDoesNotThrow(() -> productDao.deleteById(null));
+        assertDoesNotThrow(() -> productDao.delete(null));
     }
 }

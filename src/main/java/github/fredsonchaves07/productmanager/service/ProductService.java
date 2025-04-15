@@ -3,6 +3,7 @@ package github.fredsonchaves07.productmanager.service;
 import github.fredsonchaves07.productmanager.dao.ProductDao;
 import github.fredsonchaves07.productmanager.entity.Product;
 import github.fredsonchaves07.productmanager.error.ProductError;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +18,12 @@ public class ProductService {
     @Autowired
     private ProductDao dao;
 
+    @Transactional
     public ProductDto createProduct(ProductDto productDto) {
         return ProductDto.fromEntity(dao.save(productDto.toEntity()));
     }
 
+    @Transactional
     public ProductDto updateProduct(Long id, ProductDto productDto) {
         return ProductDto.fromEntity(updateProductWithProductDto(id, productDto));
     }
@@ -44,11 +47,13 @@ public class ProductService {
         return dao.findAll().stream().map(ProductDto::fromEntity).toList();
     }
 
+    @Transactional
     public void deleteProduct(Long id) {
         Product product = dao.findById(id).orElseThrow(() -> ProductError.throwsError(NOT_FOUND));
-        dao.deleteById(id);
+        dao.delete(product);
     }
 
+    @Transactional
     public void deleteAllProducts() {
         dao.deleteAll();
     }

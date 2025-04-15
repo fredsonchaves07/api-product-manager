@@ -13,7 +13,7 @@ public interface ProductDao {
 
     List<Product> findAll();
 
-    void deleteById(Long id);
+    void delete(Product product);
 
     void deleteAll();
 

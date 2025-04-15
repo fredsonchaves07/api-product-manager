@@ -20,6 +20,10 @@ public final class ProductFake {
                 .build();
     }
 
+    public static ProductDto createProductDto() {
+        return ProductDto.fromEntity(createProductFake());
+    }
+
     public static ProductDto createProductDtoFromProduct(Product product) {
         return ProductDto.fromEntity(product);
     }
