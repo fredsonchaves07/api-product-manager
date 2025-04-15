@@ -40,6 +40,7 @@ public class ProductService {
 
     public Optional<ProductDto> findProduct(Long id) {
         Optional<Product> product = dao.findById(id);
+        if (product.isEmpty()) throw ProductError.throwsError(NOT_FOUND);
         return product.map(ProductDto::fromEntity);
     }
 

@@ -4,6 +4,9 @@ import github.fredsonchaves07.productmanager.error.InternalErrorException;
 import github.fredsonchaves07.productmanager.error.ProductError;
 import github.fredsonchaves07.productmanager.service.ProductDto;
 import github.fredsonchaves07.productmanager.service.ProductService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,12 +18,23 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/products")
+@Tag(name = "products")
 public class ProductController {
 
     @Autowired
     private ProductService service;
 
     @PostMapping
+    @Operation(summary = "Criação de um produto", description = "Cadastra um novo produto no sistema.")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "201",
+                    description = "Produto cadastrado com sucesso."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "400",
+                    description = "Erro de validação do produto."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "Erro interno do servidor.")
+    })
     public ResponseEntity<ApiResponse<?>> create(@RequestBody ProductDto dto, HttpServletRequest request) {
         try {
             ProductDto product = service.createProduct(dto);
@@ -33,6 +47,12 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Atualização de produto", description = "Atualiza os dados de um produto existente.")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Produto atualizado com sucesso."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Erro de validação ou produto inexistente."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "Erro interno do servidor.")
+    })
     public ResponseEntity<ApiResponse<?>> updateProduct(
             @PathVariable Long id,
             @RequestBody ProductDto productDto,
@@ -48,22 +68,31 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Consulta de produto por ID", description = "Retorna os dados de um produto com base no ID informado.")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Produto consultado com sucesso.."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Erro de validação ou produto inexistente."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "Erro interno do servidor.")
+    })
     public ResponseEntity<ApiResponse<?>> getProduct(
             @PathVariable Long id,
             HttpServletRequest request) {
         try {
             Optional<ProductDto> product = service.findProduct(id);
-            return product.map(
-                            productDto -> success("Produto consultado com sucesso.", HttpStatus.OK.value(), request.getRequestURI(), productDto))
-                    .orElseGet(() -> success("Produto consultado com sucesso.", HttpStatus.OK.value(), request.getRequestURI(), List.of()));
+            return success("Produto consultado com sucesso.", HttpStatus.OK.value(), request.getRequestURI(), product.orElseThrow());
         } catch (ProductError error) {
             return error("Não foi possível realizar a consulta do produto.", HttpStatus.BAD_REQUEST.value(), request.getRequestURI(), error);
         } catch (Exception exception) {
-            throw new InternalErrorException("Não foi possível realizar a atualização do produto.", exception);
+            throw new InternalErrorException("Não foi possível realizar a consulta do produto.", exception);
         }
     }
 
     @GetMapping
+    @Operation(summary = "Consulta de todos os produtos", description = "Retorna a lista completa de produtos cadastrados.")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Produtos consultados com sucesso."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "Erro interno do servidor.")
+    })
     public ResponseEntity<ApiResponse<?>> getProducts(HttpServletRequest request) {
         try {
             List<ProductDto> products = service.findAllProducts();
@@ -71,11 +100,17 @@ public class ProductController {
         } catch (ProductError error) {
             return error("Não foi possível realizar a consulta de produtos.", HttpStatus.BAD_REQUEST.value(), request.getRequestURI(), error);
         } catch (Exception exception) {
-            throw new InternalErrorException("Não foi possível realizar a atualização do produto.", exception);
+            throw new InternalErrorException("Não foi possível realizar a consulta de produtos.", exception);
         }
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Exclusão de produto por ID", description = "Exclui um produto específico com base no ID informado.")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "204", description = "Produto excluído com sucesso."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "ID inválido ou produto inexistente."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "Erro interno do servidor.")
+    })
     public ResponseEntity<ApiResponse<?>> deleteById(@PathVariable Long id, HttpServletRequest request) {
         try {
             service.deleteProduct(id);
@@ -83,11 +118,16 @@ public class ProductController {
         } catch (ProductError error) {
             return error("Não foi possível realizar a exclusão do produto.", HttpStatus.BAD_REQUEST.value(), request.getRequestURI(), error);
         } catch (Exception exception) {
-            throw new InternalErrorException("Não foi possível realizar a atualização do produto.", exception);
+            throw new InternalErrorException("Não foi possível realizar a exclusão do produto.", exception);
         }
     }
 
     @DeleteMapping
+    @Operation(summary = "Exclusão de todos os produtos", description = "Remove todos os produtos cadastrados no sistema.")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "204", description = "Todos os produtos excluídos com sucesso."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "Erro interno do servidor.")
+    })
     public ResponseEntity<ApiResponse<?>> deleteAll(HttpServletRequest request) {
         try {
             service.deleteAllProducts();
@@ -95,7 +135,7 @@ public class ProductController {
         } catch (ProductError error) {
             return error("Não foi possível realizar a exclusão dos produtos.", HttpStatus.BAD_REQUEST.value(), request.getRequestURI(), error);
         } catch (Exception exception) {
-            throw new InternalErrorException("Não foi possível realizar a atualização do produto.", exception);
+            throw new InternalErrorException("Não foi possível realizar a exclusão dos produto.", exception);
         }
     }
 

@@ -277,11 +277,13 @@ public class ProductControllerTest {
     void shouldReturnEmptyWhenFindProductByInexistentId() throws Exception {
         mockMvc.perform(get("/products/{id}", 999)
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.status").value("Produto consultado com sucesso."))
-                .andExpect(jsonPath("$.statusCode").value(200))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.status").value("Não foi possível realizar a consulta do produto."))
+                .andExpect(jsonPath("$.statusCode").value(400))
                 .andExpect(jsonPath("$.path").value("/products/" + 999))
-                .andExpect(jsonPath("$.payload").isEmpty());
+                .andExpect(jsonPath("$.payload.type").value("NOT_FOUND"))
+                .andExpect(jsonPath("$.payload.message").value("Produto não encontrado"))
+                .andExpect(jsonPath("$.payload.description").value("Produto não encontrado com o ID informado."));
     }
 
     @Test

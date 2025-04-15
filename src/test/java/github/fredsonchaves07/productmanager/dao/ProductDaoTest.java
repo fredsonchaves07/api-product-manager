@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static github.fredsonchaves07.productmanager.factories.entity.ProductFake.createProductFake;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
@@ -38,7 +39,7 @@ public final class ProductDaoTest {
         assertNotNull(product.id());
         assertEquals(newProduct.name(), product.name());
         assertEquals(newProduct.description(), product.description());
-        assertEquals(newProduct.price(), product.price());
+        assertThat(newProduct.price()).isEqualByComparingTo(product.price());
         assertEquals(newProduct.stockQuantity(), product.stockQuantity());
         assertEquals(Long.valueOf(1), productDao.count());
         assertFalse(productDao.findAll().isEmpty());
@@ -57,7 +58,7 @@ public final class ProductDaoTest {
         assertEquals(newProduct.id(), productUpdate.id());
         assertEquals(product.name(), productUpdate.name());
         assertEquals(product.description(), productUpdate.description());
-        assertEquals(product.price(), productUpdate.price());
+        assertThat(product.price()).isEqualByComparingTo(productUpdate.price());
         assertEquals(product.stockQuantity(), productUpdate.stockQuantity());
         assertEquals(Long.valueOf(1), productDao.count());
         assertFalse(productDao.findAll().isEmpty());
@@ -71,7 +72,7 @@ public final class ProductDaoTest {
         assertEquals(newProduct.id(), product.get().id());
         assertEquals(newProduct.name(), product.get().name());
         assertEquals(newProduct.description(), product.get().description());
-        assertEquals(newProduct.price(), product.get().price());
+        assertThat(newProduct.price()).isEqualByComparingTo(product.get().price());
         assertEquals(newProduct.stockQuantity(), product.get().stockQuantity());
     }
 

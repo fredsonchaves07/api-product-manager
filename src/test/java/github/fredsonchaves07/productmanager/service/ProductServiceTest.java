@@ -15,6 +15,7 @@ import java.util.Optional;
 
 import static github.fredsonchaves07.productmanager.factories.entity.ProductFake.createProductDtoFromProduct;
 import static github.fredsonchaves07.productmanager.factories.entity.ProductFake.createProductFake;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -125,7 +126,7 @@ public class ProductServiceTest {
         assertEquals(newProduct.id(), product.id());
         assertEquals(productUpdate.name(), product.name());
         assertEquals(productUpdate.description(), product.description());
-        assertEquals(productUpdate.price(), product.price());
+        assertThat(productUpdate.price()).isEqualByComparingTo(product.price());
         assertEquals(productUpdate.stockQuantity(), product.stockQuantity());
     }
 
@@ -247,20 +248,34 @@ public class ProductServiceTest {
         assertEquals(newProduct.id(), product.get().id());
         assertEquals(newProduct.name(), product.get().name());
         assertEquals(newProduct.description(), product.get().description());
-        assertEquals(newProduct.price(), product.get().price());
+        assertThat(product.get().price()).isEqualByComparingTo(newProduct.price());
         assertEquals(newProduct.stockQuantity(), product.get().stockQuantity());
     }
 
     @Test
     void shouldReturnEmptyWhenFindProductByInexistentId() {
-        Optional<ProductDto> product = service.findProduct(999L);
-        assertTrue(product.isEmpty());
+        TypeProductError expectedTypeError = TypeProductError.NOT_FOUND;
+        String expectedErrorMessage = "Produto não encontrado";
+        String expectedDescriptionMessage = "Produto não encontrado com o ID informado.";
+        final ProductError productError = assertThrows(
+                ProductError.class,
+                () -> service.findProduct(9999L));
+        assertEquals(expectedTypeError, productError.typeError());
+        assertEquals(expectedErrorMessage, productError.message());
+        assertEquals(expectedDescriptionMessage, productError.description());
     }
 
     @Test
     void shouldReturnEmptyWhenFindProductByIdNull() {
-        Optional<ProductDto> product = service.findProduct(null);
-        assertTrue(product.isEmpty());
+        TypeProductError expectedTypeError = TypeProductError.NOT_FOUND;
+        String expectedErrorMessage = "Produto não encontrado";
+        String expectedDescriptionMessage = "Produto não encontrado com o ID informado.";
+        final ProductError productError = assertThrows(
+                ProductError.class,
+                () -> service.findProduct(null));
+        assertEquals(expectedTypeError, productError.typeError());
+        assertEquals(expectedErrorMessage, productError.message());
+        assertEquals(expectedDescriptionMessage, productError.description());
     }
 
     @Test
