@@ -25,7 +25,9 @@ public class ProductService {
 
     @Transactional
     public ProductDto updateProduct(Long id, ProductDto productDto) {
-        return ProductDto.fromEntity(updateProductWithProductDto(id, productDto));
+        Product product = updateProductWithProductDto(id, productDto);
+        dao.save(product);
+        return ProductDto.fromEntity(product);
     }
 
     private Product updateProductWithProductDto(Long id, ProductDto productDto) {
