@@ -13,6 +13,7 @@
   - [Executando Testes](#executando-os-testes-da-aplicação)
 - [Executando a aplicação](#%EF%B8%8F-executando-a-aplicação)
 - [Documentação](#-documentação)
+- [Exemplos de Requisições](#-exemplos-de-requisições)
 - [Bugs](#-bugs)
 - [Contribuição](#-contribuições)
 - [Licença](#%EF%B8%8F-licença)
