@@ -13,7 +13,6 @@
   - [Executando Testes](#executando-os-testes-da-aplicação)
 - [Executando a aplicação](#%EF%B8%8F-executando-a-aplicação)
 - [Documentação](#-documentação)
-- [Exemplos de Requisições](#-exemplos-de-requisições)
 - [Bugs](#-bugs)
 - [Contribuição](#-contribuições)
 - [Licença](#%EF%B8%8F-licença)
@@ -89,3 +88,85 @@ mvn spring-boot:run
 ```
 
 Ou se preferir, via .jar:
+
+```bash
+java -jar target/product-manager-0.0.1-SNAPSHOT.jar
+
+```
+
+Acesse:
+
+- API: [localhost:8080/api/v1](http://localhost:8080/api/v1)
+- Swagger: [localhost:8080/api/v1/swagger-ui/index.html](http://localhost:8080/api/v1/swagger-ui/index.html)
+
+## 📝 Documentação
+
+A API conta com documentação completa via Swagger/OpenAPI.
+
+📄 Swagger UI: http://localhost:8080/api/v1/swagger-ui/index.html
+
+📁 Colleção para requisoções no Postman: disponível em /docs/collection
+
+## 📦 Exemplos de Requisições
+
+### 🔸 Cria produto
+
+**POST** /api/v1/products
+
+```json
+{
+  "name": "Mouse sem fio",
+  "description": "Mouse",
+  "price": 89.99,
+  "quantity": 10
+}
+```
+
+### 🔸 Atualizar produto
+
+**POST** /api/v1/products/1
+
+```json
+{
+  "name": "Mouse Gamer",
+  "description": "Mouse para gamers",
+  "price": 109.99,
+  "quantity": 5
+}
+```
+
+### 🔸 Consultar um produto
+
+**GET** /api/v1/products/1
+
+### 🔸 Consultar todos produtos
+
+**GET** /api/v1/products/
+
+### 🔸 Deletar um produto
+
+**DELETE** /api/v1/products/1
+
+### 🔸 Deletar todos produto
+
+**DELETE** /api/v1/products
+
+## 🐛 Bugs
+
+Se encontrar algum bug ou comportamento inesperado:
+
+Abra uma [issue](https://github.com/fredsonchaves07/api-product-manager/issues)
+
+Ou envie uma PR com a sugestão de correção 🚀
+
+## 🤝 Contribuições
+
+Contribuições são sempre bem-vindas! 💙
+Abra uma PR com sugestões de melhoria ou novos recursos.
+
+## ⚖️ Licença
+
+Este projeto utiliza licensa de código aberto, permitindo cópia ou qualquer distribuição sem autorização.
+
+---
+Developed 💙 by Fredson Chaves
