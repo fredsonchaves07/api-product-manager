@@ -28,13 +28,13 @@
       "response": []
     },
     {
-      "name": "Products Copy",
+      "name": "Products",
       "request": {
         "method": "POST",
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"name\": \"Notebook Dell Inspiron\",\n    \"description\": \"Notebook de alta perfomance\",\n    \"price\": 3999.99,\n    \"stockQuantity\": 10\n}",
+          "raw": "{\n    \"name\": \"Playstation 5\",\n    \"description\": \"Video game de última geração\",\n    \"price\": 4999.99,\n    \"stockQuantity\": 1\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -52,6 +52,37 @@
             "api",
             "v1",
             "products"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Products",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\": \"Notebook Dell Inspiron\",\n    \"description\": \"Notebook de alta perfomance\",\n    \"price\": 3999.99,\n    \"stockQuantity\": 10\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/v1/products/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "products",
+            "1"
           ]
         }
       },
