@@ -50,6 +50,7 @@ Development)**, garantindo cobertura de testes desde a regra de negócio até os
 - ✅ Estrutura padronizada de resposta da API (`ApiResponse`)
 - ✅ Redirecionamento automático para documentação Swagger
 - ✅ Implementação com **TDD**, com testes unitários em todas as camadas (DAO, Service, Controller)
+- ✅ CI/CD automatizado utilizando Actions do Github
 - ✅ Deploy contínuo com Docker + Render (Cloud)
 - ✅ Organização de código com boas práticas: camadas bem definidas, uso de DTO, Factory, Builder, DAO
 
