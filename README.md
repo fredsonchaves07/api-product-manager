@@ -119,7 +119,7 @@ A API conta com documentação completa via Swagger/OpenAPI.
   "name": "Mouse sem fio",
   "description": "Mouse",
   "price": 89.99,
-  "quantity": 10
+  "stockQuantity": 10
 }
 ```
 
@@ -132,7 +132,7 @@ A API conta com documentação completa via Swagger/OpenAPI.
   "name": "Mouse Gamer",
   "description": "Mouse para gamers",
   "price": 109.99,
-  "quantity": 5
+  "stockQuantity": 5
 }
 ```
 
